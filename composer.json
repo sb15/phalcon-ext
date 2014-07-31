@@ -1,0 +1,22 @@
+{
+    "name": "sb15/phalcon-ext",
+    "type": "library",
+    "description": "Phalcon ext",
+    "keywords": ["phalcon-ext"],
+    "homepage": "https://github.com/sb15/phalcon-ext",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Perov",
+            "email": "alex@sb6.ru"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },    
+    "autoload": {
+        "psr-4": {
+            "Sb\\": "src"
+        }
+    }
+}
