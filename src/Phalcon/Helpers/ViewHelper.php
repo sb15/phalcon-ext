@@ -37,7 +37,7 @@ class ViewHelper
             $this->partialView = new \Phalcon\Mvc\View();
             $this->partialView->setViewsDir($applicationConfig['viewsDir']);
             $this->partialView->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
-            $this->partialView->setVar('url', new \PhalconEx\Helpers\UrlHelper($this->di));
+            $this->partialView->setVar('url', new UrlHelper($this->di));
         }
 
         foreach ($params as $paramKey => $paramValue) {
