@@ -62,7 +62,7 @@ class ViewHelper
 	{
         $host = $_SERVER['HTTP_HOST'];
         $hostParts = explode(".", $host);
-        $path = 'http://static.' . $hostParts[count($hostParts)-2] . '.' . $hostParts[count($hostParts)-1] . '/';
+        $path = '//static.' . $hostParts[count($hostParts)-2] . '.' . $hostParts[count($hostParts)-1] . '/';
 
         if (is_null($width) && is_null($height)) {
             $path .= 'upload/' . $name;
