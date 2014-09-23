@@ -2,13 +2,16 @@
 
 namespace Sb\Phalcon\Plugins;
 
-use Sb\Phalcon\Helpers;
+use Sb\Phalcon\Helpers\UrlHelper;
 
 class UrlPlugin
 {
     public function afterExecuteRoute(\Phalcon\Events\Event $event, \Phalcon\Mvc\Dispatcher $dispatcher)
     {
         $view = $dispatcher->getDI()->getService('view')->resolve();
-        $view->setVar('url', new Helpers\UrlHelper($dispatcher->getDI()));
+        $urlHelper = $dispatcher->getDI()->get(UrlHelper::SERVICE_NAME);
+        if ($urlHelper) {
+            $view->setVar('url', $urlHelper);
+        }
     }
 }

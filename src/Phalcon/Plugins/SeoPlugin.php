@@ -6,8 +6,6 @@ use Sb\Phalcon\Helpers\SeoHelper;
 
 class SeoPlugin
 {
-    const SERVICE_NAME = 'seo-helper';
-
     public function afterExecuteRoute(\Phalcon\Events\Event $event, \Phalcon\Mvc\Dispatcher $dispatcher)
     {
         $view = $dispatcher->getDI()->getService('view')->resolve();
