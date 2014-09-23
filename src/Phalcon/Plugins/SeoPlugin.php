@@ -2,6 +2,8 @@
 
 namespace Sb\Phalcon\Plugins;
 
+use Sb\Phalcon\Helpers\SeoHelper;
+
 class SeoPlugin
 {
     const SERVICE_NAME = 'seo-helper';
@@ -9,7 +11,7 @@ class SeoPlugin
     public function afterExecuteRoute(\Phalcon\Events\Event $event, \Phalcon\Mvc\Dispatcher $dispatcher)
     {
         $view = $dispatcher->getDI()->getService('view')->resolve();
-        $seoHelper = $dispatcher->getDI()->get(self::SERVICE_NAME);
+        $seoHelper = $dispatcher->getDI()->get(SeoHelper::SERVICE_NAME);
         if ($seoHelper) {
             $view->setVar('seo', $seoHelper);
         }

@@ -13,7 +13,7 @@ class Title
         if ($text) {
             array_push($this->titleParts, $text);
         } else {
-            echo implode(array_reverse($this->titleParts), self::$delimiter);
+            return implode(array_reverse($this->titleParts), self::$delimiter);
         }
     }
 

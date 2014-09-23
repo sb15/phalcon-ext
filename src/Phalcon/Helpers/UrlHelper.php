@@ -4,13 +4,14 @@ namespace Sb\Phalcon\Helpers;
 
 class UrlHelper
 {
+    const SERVICE_NAME = 'url-helper';
+
     private $di = null;
 
     public function __construct($di)
     {
         $this->di = $di;
     }
-
 
     public function get($routeName, $routeParams = array())
     {

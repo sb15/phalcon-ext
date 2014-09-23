@@ -9,6 +9,8 @@ use Sb\Phalcon\Helpers\Seo\Yandex;
 
 class SeoHelper
 {
+    const SERVICE_NAME = 'seo-helper';
+
     private $di = null;
 
     private $openGraph = null;
