@@ -4,7 +4,6 @@ namespace Sb\Phalcon\Helpers;
 
 class UrlHelper
 {
-
     private $di = null;
 
     public function __construct($di)
@@ -25,5 +24,4 @@ class UrlHelper
 
         return $url->get($options);
     }
-
 }

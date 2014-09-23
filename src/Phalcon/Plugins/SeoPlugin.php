@@ -2,17 +2,16 @@
 
 namespace Sb\Phalcon\Plugins;
 
-use Sb\Phalcon\Helpers;
-
-class UrlPlugin
+class SeoPlugin
 {
-
-    const SERVICE_NAME = 'url-helper';
+    const SERVICE_NAME = 'seo-helper';
 
     public function afterExecuteRoute(\Phalcon\Events\Event $event, \Phalcon\Mvc\Dispatcher $dispatcher)
     {
         $view = $dispatcher->getDI()->getService('view')->resolve();
-        $view->setVar('url', new Helpers\UrlHelper($dispatcher->getDI()));
+        $seoHelper = $dispatcher->getDI()->get(self::SERVICE_NAME);
+        if ($seoHelper) {
+            $view->setVar('seo', $seoHelper);
+        }
     }
-
-}
+} 
