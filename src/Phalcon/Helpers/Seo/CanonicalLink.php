@@ -23,7 +23,7 @@ class CanonicalLink
             $result .= '    <link rel="next" href="'.$this->getNext().'" />' . "\n";
         }
         if ($this->getPrev()) {
-            $result .= '    <link rel="next" href="'.$this->getPrev().'" />' . "\n";
+            $result .= '    <link rel="prev" href="'.$this->getPrev().'" />' . "\n";
         }
         return $result;
     }
