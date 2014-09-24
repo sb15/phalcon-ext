@@ -14,32 +14,39 @@ class OpenGraph
 
     public function isAvailable()
     {
-        return true;
+        return (bool)
+            $this->locale ||
+            $this->type ||
+            $this->title ||
+            $this->url ||
+            $this->description ||
+            $this->site_name ||
+            $this->image;
     }
 
     public function render()
     {
         $result = '';
         if ($this->getLocale()) {
-            $result .= '<meta property="og:locale" content="'.$this->getLocale().'" />' . "\n";
+            $result .= '    <meta property="og:locale" content="'.$this->getLocale().'" />' . "\n";
         }
         if ($this->getType()) {
-            $result .= '<meta property="og:type" content="'.$this->getType().'" />' . "\n";
+            $result .= '    <meta property="og:type" content="'.$this->getType().'" />' . "\n";
         }
         if ($this->getTitle()) {
-            $result .= '<meta property="og:title" content="'.$this->getTitle().'" />' . "\n";
+            $result .= '    <meta property="og:title" content="'.$this->getTitle().'" />' . "\n";
         }
         if ($this->getUrl()) {
-            $result .= '<meta property="og:url" content="'.$this->getUrl().'" />' . "\n";
+            $result .= '    <meta property="og:url" content="'.$this->getUrl().'" />' . "\n";
         }
         if ($this->getDescription()) {
-            $result .= '<meta property="og:description" content="'.$this->getDescription().'" />' . "\n";
+            $result .= '    <meta property="og:description" content="'.$this->getDescription().'" />' . "\n";
         }
         if ($this->getSiteName()) {
-            $result .= '<meta property="og:site_name" content="'.$this->getSiteName().'" />' . "\n";
+            $result .= '    <meta property="og:site_name" content="'.$this->getSiteName().'" />' . "\n";
         }
         if ($this->getImage()) {
-            $result .= '<meta property="og:image" content="'.$this->getImage().'" />' . "\n";
+            $result .= '    <meta property="og:image" content="'.$this->getImage().'" />' . "\n";
         }
         return $result;
     }

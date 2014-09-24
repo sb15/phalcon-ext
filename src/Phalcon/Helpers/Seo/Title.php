@@ -15,6 +15,7 @@ class Title
         } else {
             return implode(array_reverse($this->titleParts), self::$delimiter);
         }
+        return '';
     }
 
     public function render()

@@ -3,6 +3,7 @@
 namespace Sb\Phalcon\Helpers;
 
 use Sb\Phalcon\Helpers\Seo\CanonicalLink;
+use Sb\Phalcon\Helpers\Seo\Meta;
 use Sb\Phalcon\Helpers\Seo\OpenGraph;
 use Sb\Phalcon\Helpers\Seo\Title;
 use Sb\Phalcon\Helpers\Seo\Yandex;
@@ -17,45 +18,36 @@ class SeoHelper
     private $canonicalLink = null;
     private $title = null;
     private $yandex = null;
+    private $meta = null;
 
     public function __construct($di)
     {
         $this->di = $di;
     }
 
-    public function getHtmlPrefix()
+    public function renderHtmlPrefix()
     {
         $result = 'prefix="';
         if ($this->getOpenGraph()->isAvailable()) {
-            $result .= 'og: http://ogp.me/ns#';
+            $result .= 'og: http://ogp.me/ns# ';
         }
 
         if ($this->getYandex()->isAvailable()) {
-            $result .= 'ya: http://webmaster.yandex.ru/vocabularies/';
+            $result = 'ya: http://webmaster.yandex.ru/vocabularies/ ';
         }
 
         $result = trim($result) . '"';
         return $result;
     }
 
-    public function getHeadMetaData()
+    public function render()
     {
         $result = '';
         $result .= $this->getTitle()->render();
-        $result .= '<meta name="robots" content="index, follow" />';
-
-        if ($this->getCanonicalLink()->isAvailable()) {
-            $result .= $this->getCanonicalLink()->render();
-        }
-
-        if ($this->getYandex()->isAvailable()) {
-            $result .= $this->getYandex()->render();
-        }
-
-        if ($this->getOpenGraph()->isAvailable()) {
-            $result .= $this->getOpenGraph()->render();
-        }
-
+        $result .= $this->getMeta()->render();
+        $result .= $this->getCanonicalLink()->render();
+        $result .= $this->getYandex()->render();
+        $result .= $this->getOpenGraph()->render();
         return $result;
     }
 
@@ -92,6 +84,14 @@ class SeoHelper
             $this->yandex = new Yandex();
         }
         return $this->yandex;
+    }
+
+    public function getMeta()
+    {
+        if (!$this->meta) {
+            $this->meta = new Meta();
+        }
+        return $this->meta;
     }
 
 } 

@@ -16,10 +16,10 @@ class Yandex
     {
         $result = '';
         if ($this->getInteraction()) {
-            $result .= '<meta property="ya:interaction" content="'.$this->getInteraction().'" />' . "\n";
+            $result .= '    <meta property="ya:interaction" content="'.$this->getInteraction().'" />' . "\n";
         }
         if ($this->getInteractionUrl()) {
-            $result .= '<meta property="ya:interaction:url" content="'.$this->getInteractionUrl().'" />' . "\n";
+            $result .= '    <meta property="ya:interaction:url" content="'.$this->getInteractionUrl().'" />' . "\n";
         }
         return $result;
     }

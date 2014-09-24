@@ -17,13 +17,13 @@ class CanonicalLink
     {
         $result = '';
         if ($this->getCanonical()) {
-            $result .= '<link rel="canonical" href="'.$this->getCanonical().'" />' . "\n";
+            $result .= '    <link rel="canonical" href="'.$this->getCanonical().'" />' . "\n";
         }
         if ($this->getNext()) {
-            $result .= '<link rel="next" href="'.$this->getNext().'" />' . "\n";
+            $result .= '    <link rel="next" href="'.$this->getNext().'" />' . "\n";
         }
         if ($this->getPrev()) {
-            $result .= '<link rel="next" href="'.$this->getPrev().'" />' . "\n";
+            $result .= '    <link rel="next" href="'.$this->getPrev().'" />' . "\n";
         }
         return $result;
     }
