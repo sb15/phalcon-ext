@@ -35,4 +35,9 @@ class BreadcrumbHelper
         return $this->breadcrumbs;
     }
 
+    public function count()
+    {
+        return count($this->breadcrumbs);
+    }
+
 } 
