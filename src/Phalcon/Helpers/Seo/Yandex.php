@@ -26,10 +26,12 @@ class Yandex
 
     /**
      * @param null $interaction
+     * @return $this
      */
     public function setInteraction($interaction)
     {
         $this->interaction = $interaction;
+        return $this;
     }
 
     /**
@@ -42,10 +44,12 @@ class Yandex
 
     /**
      * @param null $interactionUrl
+     * @return $this
      */
     public function setInteractionUrl($interactionUrl)
     {
         $this->interactionUrl = $interactionUrl;
+        return $this;
     }
 
     /**

@@ -10,10 +10,12 @@ class Meta
 
     /**
      * @param string $robots
+     * @return $this
      */
     public function setRobots($robots)
     {
         $this->robots = $robots;
+        return $this;
     }
 
     /**
@@ -26,10 +28,12 @@ class Meta
 
     /**
      * @param null $keywords
+     * @return $this
      */
     public function setKeywords($keywords)
     {
         $this->keywords = $keywords;
+        return $this;
     }
 
     /**
@@ -42,10 +46,12 @@ class Meta
 
     /**
      * @param null $description
+     * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+        return $this;
     }
 
     /**

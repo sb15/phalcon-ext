@@ -30,10 +30,12 @@ class CanonicalLink
 
     /**
      * @param null $canonical
+     * @return $this
      */
     public function setCanonical($canonical)
     {
         $this->canonical = $canonical;
+        return $this;
     }
 
     /**
@@ -46,10 +48,12 @@ class CanonicalLink
 
     /**
      * @param null $next
+     * @return $this
      */
     public function setNext($next)
     {
         $this->next = $next;
+        return $this;
     }
 
     /**
@@ -62,10 +66,12 @@ class CanonicalLink
 
     /**
      * @param null $prev
+     * @return $this
      */
     public function setPrev($prev)
     {
         $this->prev = $prev;
+        return $this;
     }
 
     /**

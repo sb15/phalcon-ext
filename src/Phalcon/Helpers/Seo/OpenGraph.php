@@ -53,10 +53,12 @@ class OpenGraph
 
     /**
      * @param null $description
+     * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -69,10 +71,12 @@ class OpenGraph
 
     /**
      * @param null $image
+     * @return $this
      */
     public function setImage($image)
     {
         $this->image = $image;
+        return $this;
     }
 
     /**
@@ -85,10 +89,12 @@ class OpenGraph
 
     /**
      * @param null $locale
+     * @return $this
      */
     public function setLocale($locale)
     {
         $this->locale = $locale;
+        return $this;
     }
 
     /**
@@ -101,10 +107,12 @@ class OpenGraph
 
     /**
      * @param null $site_name
+     * @return $this
      */
     public function setSiteName($site_name)
     {
         $this->site_name = $site_name;
+        return $this;
     }
 
     /**
@@ -117,10 +125,12 @@ class OpenGraph
 
     /**
      * @param null $title
+     * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -133,10 +143,12 @@ class OpenGraph
 
     /**
      * @param null $type
+     * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+        return $this;
     }
 
     /**
@@ -149,10 +161,12 @@ class OpenGraph
 
     /**
      * @param null $url
+     * @return $this
      */
     public function setUrl($url)
     {
         $this->url = $url;
+        return $this;
     }
 
     /**

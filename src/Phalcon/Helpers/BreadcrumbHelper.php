@@ -22,9 +22,15 @@ class BreadcrumbHelper
         return (bool) count($this->breadcrumbs);
     }
 
+    /**
+     * @param $url
+     * @param $name
+     * @return $this
+     */
     public function addBreadcrumb($url, $name)
     {
         $this->breadcrumbs[] = new Element($url, $name);
+        return $this;
     }
 
     /**
