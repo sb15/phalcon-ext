@@ -40,9 +40,7 @@ class ViewHelper
             $this->partialView->setVar('url', new UrlHelper($this->di));
         }
 
-        foreach ($params as $paramKey => $paramValue) {
-            $this->partialView->setVar($paramKey, $paramValue);
-        }
+        $this->partialView->setVars($params );
 
         list($action, $controller) = explode("/", $template);
         $this->partialView->start();
