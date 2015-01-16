@@ -8,6 +8,8 @@ class Meta
     private $description = null;
     private $robots = 'index, follow';
 
+    // add verification meta
+
     /**
      * @param string $robots
      * @return $this
