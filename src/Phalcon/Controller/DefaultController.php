@@ -28,6 +28,11 @@ class DefaultController extends \Phalcon\Mvc\Controller
 
     }
 
+    public function disableLayout()
+    {
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
+    }
+
     /**
      * @return \Model\ModelsRepository
      */
