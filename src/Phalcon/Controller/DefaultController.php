@@ -18,12 +18,12 @@ class DefaultController extends \Phalcon\Mvc\Controller
         $this->view->setVars($data);
     }
 
-    public function beforeExecuteRoute(Phalcon\Mvc\Dispatcher $dispatcher)
+    public function beforeExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
     {
 
     }
 
-    public function afterExecuteRoute(Phalcon\Mvc\Dispatcher $dispatcher)
+    public function afterExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
     {
 
     }
