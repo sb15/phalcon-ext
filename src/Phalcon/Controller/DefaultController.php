@@ -2,6 +2,8 @@
 
 namespace Sb\Phalcon\Controller;
 
+use Sb\Phalcon\Helpers;
+
 class DefaultController extends \Phalcon\Mvc\Controller
 {
     /**
