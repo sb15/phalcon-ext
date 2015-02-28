@@ -79,11 +79,10 @@ class Paginator
         return $this->total_pages;
     }
 
-    public function getPagesInRange()
+    public function getPagesInRange($pageRange = 10)
     {
         $pageNumber = $this->getCurrentPage();
         $pageCount  = $this->getTotalPages();
-        $pageRange = 10;
 
         if ($pageRange > $pageCount) {
             $pageRange = $pageCount;
