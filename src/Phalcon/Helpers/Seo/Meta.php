@@ -68,13 +68,13 @@ class Meta
     {
         $result = '';
         if ($this->getDescription()) {
-            $result .= '    <meta name="description" content="'.$this->getDescription().'"/>' . "\n";
+            $result .= '    <meta name="description" content="'.str_replace('"', '', $this->getDescription()).'"/>' . "\n";
         }
         if ($this->getKeywords()) {
-            $result .= '    <meta name="keywords" content="'.$this->getKeywords().'"/>' . "\n";
+            $result .= '    <meta name="keywords" content="'.str_replace('"', '', $this->getKeywords()).'"/>' . "\n";
         }
         if ($this->getRobots()) {
-            $result .= '    <meta name="robots" content="'.$this->getRobots().'"/>' . "\n";
+            $result .= '    <meta name="robots" content="'.str_replace('"', '', $this->getRobots()).'"/>' . "\n";
         }
         return $result;
     }

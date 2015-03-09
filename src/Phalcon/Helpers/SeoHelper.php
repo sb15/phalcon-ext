@@ -32,8 +32,13 @@ class SeoHelper
             $result .= 'og: http://ogp.me/ns# ';
         }
 
+        $ogPrefix = $this->getOpenGraph()->getOgPrefix();
+        if ($ogPrefix) {
+            $result .= $ogPrefix . ' ';
+        }
+
         if ($this->getYandex()->isAvailable()) {
-            $result = 'ya: http://webmaster.yandex.ru/vocabularies/ ';
+            $result .= 'ya: http://webmaster.yandex.ru/vocabularies/ ';
         }
 
         $result = trim($result) . '"';
