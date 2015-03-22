@@ -71,6 +71,23 @@ class ViewHelper
         return $path;
     }
 
+    public function imageResizeIdn($name, $width = null, $height = null, $mode = 0, $host = null)
+	{
+        if (!$host) {
+            $host = $_SERVER['HTTP_HOST'];
+        }
+        $hostParts = explode(".", $host);
+        $path = '//static.' . $hostParts[count($hostParts)-2] . '.' . $hostParts[count($hostParts)-1] . '/idn/';
+
+        if (is_null($width) && is_null($height)) {
+            $path .= $name;
+        } else {
+            $path .= "_img/{$width}/{$height}/{$mode}/" . $name;
+        }
+
+        return $path;
+    }
+
     public function js($group, $theme = 'default')
     {
         return $this->jsAssets->javascripts($group, $theme);
