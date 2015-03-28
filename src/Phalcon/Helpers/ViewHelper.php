@@ -73,6 +73,7 @@ class ViewHelper
 
     public function imageResizeIdn($name, $width = null, $height = null, $mode = 0, $host = null)
 	{
+        $name = strtolower($name);
         if (!$host) {
             $host = $_SERVER['HTTP_HOST'];
         }

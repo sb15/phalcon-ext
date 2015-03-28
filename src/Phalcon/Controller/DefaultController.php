@@ -35,6 +35,11 @@ class DefaultController extends \Phalcon\Mvc\Controller
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
     }
 
+    public function setJsonResponse()
+    {
+        $this->view->setVar(\Sb\Phalcon\Plugins\ViewReturnPlugin::SET_JSON_RESPONSE, true);
+    }
+
     /**
      * @return \Model\ModelsRepository
      */
@@ -64,7 +69,11 @@ class DefaultController extends \Phalcon\Mvc\Controller
      */
     public function getSentry()
     {
-        return $this->getDI()->get('sentry');
+        $sentry = $this->getDI()->get('sentry');
+        if (!$sentry) {
+            $sentry = new \Sb\Phalcon\Replacer\Replacer();
+        }
+        return $sentry;
     }
 
     public function url($routeName, $params = array())
