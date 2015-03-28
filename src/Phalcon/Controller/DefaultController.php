@@ -171,9 +171,12 @@ class DefaultController extends \Phalcon\Mvc\Controller
         return $result;
     }
 
-    public function error404()
+    protected function error404()
     {
-        header("Status: 404 Not Found");
-        $this->view->pick('error/404');
+        $this->dispatcher->forward(array(
+            'controller' => 'error',
+            'action' => 'notFound',
+        ));
     }
+
 }
