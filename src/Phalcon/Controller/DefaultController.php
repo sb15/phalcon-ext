@@ -177,6 +177,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
             'controller' => 'error',
             'action' => 'notFound',
         ));
+        return [];
     }
 
 }

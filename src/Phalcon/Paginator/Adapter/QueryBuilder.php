@@ -46,7 +46,7 @@ class QueryBuilder implements AdapterInterface
      * @param array $config
      * @throws Exception
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         if (is_array($config) === false) {
             throw new Exception('Invalid parameter type.');
