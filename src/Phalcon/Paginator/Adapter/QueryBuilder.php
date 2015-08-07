@@ -147,4 +147,14 @@ class QueryBuilder implements AdapterInterface
 
         return $page;
     }
+
+    public setLimit($limit)
+    {
+        $this->_limitRows = $limit;
+    }
+
+    public getLimit()
+    {
+        return $this->_limitRows;
+    }
 }
