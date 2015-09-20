@@ -17,11 +17,10 @@ class RatingMail
             return '';
         }
 
-        return '
-            <script>
-                var RatingMailImage = new Image();
-                RatingMailImage.src = "//top-fwz1.mail.ru/counter?id='+$this->id+';t=464;l=1";
-            </script>
-        ';
+        return
+        "<script>\n" +
+        "   var RatingMailImage = new Image();\n" +
+        "   RatingMailImage.src = \"//top-fwz1.mail.ru/counter?id='{$this->id}';t=464;l=1\";\n" +
+        "</script>\n";
     }
 } 
