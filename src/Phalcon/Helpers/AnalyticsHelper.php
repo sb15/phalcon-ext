@@ -5,6 +5,7 @@ namespace Sb\Phalcon\Helpers;
 use Sb\Phalcon\Helpers\Analytics\YandexMetrika;
 use Sb\Phalcon\Helpers\Analytics\GoogleAnalytics;
 use Sb\Phalcon\Helpers\Analytics\LiveInternet;
+use Sb\Phalcon\Helpers\Analytics\RatingMail;
 
 class AnalyticsHelper
 {
@@ -14,6 +15,7 @@ class AnalyticsHelper
     private $yandexMetrika = null;
     private $googleAnalytics = null;
     private $liveInternet = null;
+    private $ratingMail = null;
 
     public function __construct($di)
     {
@@ -25,6 +27,8 @@ class AnalyticsHelper
         $result = '';
         $result .= $this->getYandexMetrika()->render();
         $result .= $this->getGoogleAnalytics()->render();
+        $result .= $this->getLiveInternet()->render();
+        $result .= $this->getRatingMail()->render();
         return $result;
     }
 
@@ -59,6 +63,17 @@ class AnalyticsHelper
             $this->liveInternet = new LiveInternet();
         }
         return $this->liveInternet;
+    }
+
+    /**
+     * @return \Sb\Phalcon\Helpers\Analytics\RatingMail
+     */
+    public function getRatingMail()
+    {
+        if (!$this->ratingMail) {
+            $this->ratingMail = new RatingMail();
+        }
+        return $this->ratingMail;
     }
 
 } 
