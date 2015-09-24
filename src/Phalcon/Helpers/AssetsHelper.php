@@ -48,14 +48,14 @@ class AssetsHelper
         return true;
     }
 
-    public function renderInHeader()
+    public function header()
     {
         $this->renderAsyncLoad();
 
         echo $this->renderAssets($this->headerAssets);
     }
 
-    public function renderInFooter()
+    public function footer()
     {
         $this->renderAsyncLoad();
 
