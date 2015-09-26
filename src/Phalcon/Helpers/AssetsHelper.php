@@ -32,38 +32,58 @@ class AssetsHelper
 
     public function renderAsyncLoad()
     {
+        $result = "";
         if ($this->asyncLoadRendered) {
-            return true;
+            return $result;
         }
 
         if ($this->isAsyncLoadCssExist()) {
-            $this->flushCssCode();
+            $result .= $this->flushCssCode();
         }
 
         if ($this->isAsyncLoadJsExist()) {
-            $this->flushJsCode();
+            $result .=$this->flushJsCode();
         }
 
         $this->asyncLoadRendered = true;
-        return true;
+        return $result;
     }
 
     public function header()
     {
-        $this->renderAsyncLoad();
-
-        echo $this->renderAssets($this->headerAssets);
+        $result = "";
+        $result .= $this->renderAsyncLoad();
+        $result .= $this->renderAssets($this->headerAssets);
+        return $result;
     }
 
     public function footer()
     {
-        $this->renderAsyncLoad();
-
-        echo $this->renderAssets($this->footerAssets);
+        $result = "";
+        $result .= $this->renderAsyncLoad();
+        $result .= $this->renderAssets($this->footerAssets);
 
         if (count($this->scripts)) {
-            echo "<script>\n" . implode("\n\n", $this->scripts) . "</script>";
+            $result .= "<script>\n" . implode("\n\n", $this->scripts) . "</script>";
         }
+
+        return $result;
+    }
+
+    private function sortByPriority($asset)
+    {
+        $firstOrder = [];
+        $secondOrder = [];
+
+        foreach($asset as $element) {
+            if ($element['priority'] == 100) {
+                $firstOrder[] = $element;
+            } elseif ($element['priority'] == 200) {
+                $secondOrder[] = $element;
+            }
+        }
+
+        return array_merge($firstOrder, $secondOrder);
     }
 
     private function renderAssets($assets)
@@ -71,7 +91,41 @@ class AssetsHelper
         $result = '';
 
         $css = $assets[self::ASSET_TYPE_CSS];
-        $js = $assets[self::ASSET_TYPE_JS];
+        $js = $this->sortByPriority($assets[self::ASSET_TYPE_JS]);
+
+        foreach ($css as $option) {
+
+            if (array_key_exists('ifCondition', $option) && $option['ifCondition']) {
+                $result .= "<!--[if {$option['ifCondition']}]>\n";
+            }
+
+            if ($option['asyncLoad'] == true) {
+            } else {
+                $result .= "<link rel=\"stylesheet\" href=\"{$option['path']}\"/>\n";
+            }
+
+            if (array_key_exists('ifCondition', $option) && $option['ifCondition']) {
+                $result .= "<![endif]-->\n";
+            }
+        }
+
+        foreach ($js as $option) {
+
+            if (array_key_exists('ifCondition', $option) && $option['ifCondition']) {
+                $result .= "<!--[if {$option['ifCondition']}]>\n";
+            }
+
+            if ($option['async'] == true) {
+                $result .= "<script src=\"{$option['path']}\" async></script>\n";
+            } elseif ($option['asyncLoad'] == true) {
+            } else {
+                $result .= "<script src=\"{$option['path']}\"></script>\n";
+            }
+
+            if (array_key_exists('ifCondition', $option) && $option['ifCondition']) {
+                $result .= "<![endif]-->\n";
+            }
+        }
 
         $asyncLoadListCss = [];
         foreach ($css as $option) {
@@ -80,7 +134,7 @@ class AssetsHelper
             }
         }
         if (count($asyncLoadListCss)) {
-            $this->asyncCss($asyncLoadListCss);
+            $result .= $this->asyncCss($asyncLoadListCss);
         }
 
         $asyncLoadListJs = [];
@@ -90,23 +144,7 @@ class AssetsHelper
             }
         }
         if (count($asyncLoadListJs)) {
-            $this->asyncJs($asyncLoadListJs);
-        }
-
-        foreach ($css as $option) {
-            if ($option['asyncLoad'] == true) {
-            } else {
-                $result .= "<link href=\"{$option['path']}\" rel=\"stylesheet\" />\n";
-            }
-        }
-
-        foreach ($js as $option) {
-            if ($option['async'] == true) {
-                $result .= "<script src=\"{$option['path']}\" async></script>\n";
-            } elseif ($option['asyncLoad'] == true) {
-            } else {
-                $result .= "<script src=\"{$option['path']}\"></script>\n";
-            }
+            $result .= $this->asyncJs($asyncLoadListJs);
         }
 
         return $result;
@@ -133,6 +171,17 @@ class AssetsHelper
         return $result;
     }
 
+    public function addHeaderCssPost($options)
+    {
+        if (!is_array($options)) {
+            $options = [
+                'path' => $options
+            ];
+        }
+        $options['priority'] = 200;
+        $this->addHeaderCss($options);
+    }
+
     public function addHeaderCss($options)
     {
         if (!is_array($options)) {
@@ -144,11 +193,30 @@ class AssetsHelper
         if (!array_key_exists('asyncLoad', $options)) {
             $options['asyncLoad'] = false;
         }
+        if (!array_key_exists('ifCondition', $options)) {
+            $options['ifCondition'] = false;
+        }
+        if (!array_key_exists('priority', $options)) {
+            $options['priority'] = 100;
+        }
 
         $this->headerAssets[self::ASSET_TYPE_CSS][] = [
             'path' => $options['path'],
-            'asyncLoad' => $options['asyncLoad']
+            'asyncLoad' => $options['asyncLoad'],
+            'ifCondition' => $options['ifCondition'],
+            'priority' => $options['priority'],
         ];
+    }
+
+    public function addHeaderJsPost($options)
+    {
+        if (!is_array($options)) {
+            $options = [
+                'path' => $options
+            ];
+        }
+        $options['priority'] = 200;
+        $this->addHeaderJs($options);
     }
 
     public function addHeaderJs($options)
@@ -165,12 +233,31 @@ class AssetsHelper
         if (!array_key_exists('asyncLoad', $options)) {
             $options['asyncLoad'] = false;
         }
+        if (!array_key_exists('ifCondition', $options)) {
+            $options['ifCondition'] = false;
+        }
+        if (!array_key_exists('priority', $options)) {
+            $options['priority'] = 100;
+        }
 
         $this->headerAssets[self::ASSET_TYPE_JS][] = [
             'path' => $options['path'],
             'async' => $options['async'],
-            'asyncLoad' => $options['asyncLoad']
+            'asyncLoad' => $options['asyncLoad'],
+            'ifCondition' => $options['ifCondition'],
+            'priority' => $options['priority'],
         ];
+    }
+
+    public function addFooterCssPost($options)
+    {
+        if (!is_array($options)) {
+            $options = [
+                'path' => $options
+            ];
+        }
+        $options['priority'] = 200;
+        $this->addFooterCss($options);
     }
 
     public function addFooterCss($options)
@@ -184,11 +271,30 @@ class AssetsHelper
         if (!array_key_exists('asyncLoad', $options)) {
             $options['asyncLoad'] = false;
         }
+        if (!array_key_exists('ifCondition', $options)) {
+            $options['ifCondition'] = false;
+        }
+        if (!array_key_exists('priority', $options)) {
+            $options['priority'] = 100;
+        }
 
         $this->footerAssets[self::ASSET_TYPE_CSS][] = [
             'path' => $options['path'],
-            'asyncLoad' => $options['asyncLoad']
+            'asyncLoad' => $options['asyncLoad'],
+            'ifCondition' => $options['ifCondition'],
+            'priority' => $options['priority'],
         ];
+    }
+
+    public function addFooterJsPost($options)
+    {
+        if (!is_array($options)) {
+            $options = [
+                'path' => $options
+            ];
+        }
+        $options['priority'] = 200;
+        $this->addFooterJs($options);
     }
 
     public function addFooterJs($options)
@@ -205,11 +311,19 @@ class AssetsHelper
         if (!array_key_exists('asyncLoad', $options)) {
             $options['asyncLoad'] = false;
         }
+        if (!array_key_exists('ifCondition', $options)) {
+            $options['ifCondition'] = false;
+        }
+        if (!array_key_exists('priority', $options)) {
+            $options['priority'] = 100;
+        }
 
         $this->footerAssets[self::ASSET_TYPE_JS][] = [
             'path' => $options['path'],
             'async' => $options['async'],
-            'asyncLoad' => $options['asyncLoad']
+            'asyncLoad' => $options['asyncLoad'],
+            'ifCondition' => $options['ifCondition'],
+            'priority' => $options['priority'],
         ];
     }
 
@@ -233,14 +347,14 @@ class AssetsHelper
         return false;
     }
 
-    public function useCdnForJQuery($version = '1.11.3')
+    public function useCdnJQuery($version = '1.11.3')
     {
         $this->addFooterJs([
             'path' => "https://code.jquery.com/jquery-{$version}.min.js"
         ]);
     }
 
-    public function useCdnForFontAwesome($version = '4.4.0')
+    public function useCdnFontAwesome($version = '4.4.0')
     {
         $this->addHeaderCss([
             'path' => "//maxcdn.bootstrapcdn.com/font-awesome/{$version}/css/font-awesome.min.css",
@@ -250,42 +364,46 @@ class AssetsHelper
 
     public function asyncCss($files)
     {
+        $result = "";
         if (!is_array($files)) {
             $files = [];
         }
 
-        echo "<script>\n";
+        $result .= "<script>\n";
         foreach ($files as $file) {
-            echo "   loadCSS(\"{$file}\");\n";
+            $result .= "   loadCSS(\"{$file}\");\n";
         }
-        echo "</script>\n";
+        $result .= "</script>\n";
 
         foreach ($files as $file) {
-            echo "<noscript><link href=\"{$file}\" rel=\"stylesheet\"></noscript>\n";
+            $result .= "<noscript><link rel=\"stylesheet\" href=\"{$file}\"></noscript>\n";
         }
+        return $result;
     }
 
     public function asyncJs($files)
     {
+        $result = "";
         if (!is_array($files)) {
             $files = [];
         }
 
-        echo "<script>\n";
+        $result .= "<script>\n";
         foreach ($files as $file) {
-            echo "   loadJS(\"{$file}\");\n";
+            $result .= "   loadJS(\"{$file}\");\n";
         }
-        echo "</script>\n";
+        $result .= "</script>\n";
+        return $result;
     }
 
     private function flushCssCode()
     {
-        echo "<script>" . $this->getCssCode() . "</script>\n";
+        return "<script>" . $this->getCssCode() . "</script>\n";
     }
 
     private function flushJsCode()
     {
-        echo "<script>" . $this->getJsCode() . "</script>\n";
+        return "<script>" . $this->getJsCode() . "</script>\n";
     }
 
     private function getCssCode() {
