@@ -20,6 +20,15 @@ class TranslationHelper
 
     public function setLang($lang)
     {
+        if (strpos($lang, "-") !== false) {
+            $temp = explode("-", $lang);
+            $lang = $temp[0];
+        }
+
+        if ($lang == 'ru') {
+            setlocale(LC_ALL, 'ru_RU.utf-8');
+        }
+
         $this->lang = $lang;
     }
 

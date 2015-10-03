@@ -10,16 +10,15 @@ class TranslationPlugin
         /** @var \Phalcon\Http\Request $request */
         $request = $dispatcher->getDI()->getService('request')->resolve();
 
-        $lang = $request->getBestLanguage();
-
-        if ($lang == 'ru') {
-            // set locale
-            setlocale(LC_ALL, 'ru_RU.utf-8');
+        if ($dispatcher->getParam('lang')) {
+            $lang = $dispatcher->getParam('lang');
+        } else {
+            $lang = $request->getBestLanguage();
         }
 
         $view = $dispatcher->getDI()->getService('view')->resolve();
 
-        $translationHelper = $dispatcher->getDI()->get(Sb\Phalcon\Helpers\TranslationHelper::SERVICE_NAME);
+        $translationHelper = $dispatcher->getDI()->get(\Sb\Phalcon\Helpers\TranslationHelper::SERVICE_NAME);
         $translationHelper->setLang($lang);
         $view->setVar('t', $translationHelper->getTranslation());
 
