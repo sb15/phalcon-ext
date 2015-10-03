@@ -1,39 +1,27 @@
 <?php
-
 namespace Sb\Phalcon\Helpers;
 
 class EmailHelper
 {
+    const SERVICE_NAME = 'email-helper';
 
     private $di = null;
-    private $partialView = null;
+    private $view = null;
+    private $templateDir = null;
 
-    public function __construct($di)
+    public function __construct($di, $templateDir)
     {
         $this->di = $di;
+        $this->templateDir = $templateDir;
     }
 
-    public function getLetter($template, $params = array())
+    public function getEmail($language, $template, $params = [])
     {
-        if (is_null($this->partialView)) {
-            $applicationConfig = $this->di->get('applicationConfig');
-            $this->partialView = new \Phalcon\Mvc\View();
-            $this->partialView->setViewsDir($applicationConfig['viewsDir']);
-            $this->partialView->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
-            $this->partialView->setVar('url', new UrlHelper($this->di));
+        if (is_null($this->view)) {
+            $this->view = new \Phalcon\Mvc\View\Simple();
+            $this->view->setViewsDir($this->templateDir);
         }
 
-        foreach ($params as $paramKey => $paramValue) {
-            $this->partialView->setVar($paramKey, $paramValue);
-        }
-
-        list($action, $controller) = explode("/", $template);
-        $this->partialView->start();
-        $this->partialView->render($action, $controller);
-        $this->partialView->finish();
-
-        return $this->partialView->getContent();
-
+        return $this->view->render($language . '/' . $template, $params);
     }
-
 }
