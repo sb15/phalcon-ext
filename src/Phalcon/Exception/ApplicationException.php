@@ -24,7 +24,7 @@ class ApplicationException extends \Exception
 
         $this->messages = $messages;
 
-        $message = reset($message);
+        $message = reset($messages);
         parent::__construct($message, $code, $previous);
     }
 
