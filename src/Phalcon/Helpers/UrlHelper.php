@@ -6,6 +6,9 @@ class UrlHelper
 {
     const SERVICE_NAME = 'url-helper';
 
+    /**
+     * @var \Phalcon\DI\FactoryDefault
+     */
     private $di = null;
 
     public function __construct($di)
