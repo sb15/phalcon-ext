@@ -7,6 +7,7 @@ use Sb\Phalcon\Helpers\Seo\Meta;
 use Sb\Phalcon\Helpers\Seo\OpenGraph;
 use Sb\Phalcon\Helpers\Seo\Title;
 use Sb\Phalcon\Helpers\Seo\Yandex;
+use Sb\Phalcon\Helpers\Seo\JsonLd;
 
 class SeoHelper
 {
@@ -19,6 +20,7 @@ class SeoHelper
     private $title = null;
     private $yandex = null;
     private $meta = null;
+    private $jsonLd = null;
 
     public function __construct($di)
     {
@@ -53,6 +55,7 @@ class SeoHelper
         $result .= $this->getCanonicalLink()->render();
         $result .= $this->getYandex()->render();
         $result .= $this->getOpenGraph()->render();
+        $result .= $this->getJsonLd()->render();
         return $result;
     }
 
@@ -97,6 +100,14 @@ class SeoHelper
             $this->meta = new Meta();
         }
         return $this->meta;
+    }
+
+    public function getJsonLd()
+    {
+        if (!$this->jsonLd) {
+            $this->jsonLd = new JsonLd();
+        }
+        return $this->jsonLd;
     }
 
 } 

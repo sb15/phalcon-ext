@@ -2,6 +2,8 @@
 
 namespace Sb\Phalcon\Helpers;
 
+use Phalcon\Mvc\View;
+
 class AssetsHelper
 {
     const SERVICE_NAME = 'assets-helper';
@@ -9,6 +11,12 @@ class AssetsHelper
     const ASSET_TYPE_CSS = 'css';
     const ASSET_TYPE_JS = 'js';
 
+    const PRIORITY_TOP = 100;
+    const PRIORITY_BOTTOM = 200;
+
+    /**
+     * @var \Phalcon\DI\FactoryDefault
+     */
     private $di = null;
 
     private $headerAssets = [
@@ -26,6 +34,11 @@ class AssetsHelper
     public function __construct($di)
     {
         $this->di = $di;
+    }
+
+    private function getCurrentRenderLevel()
+    {
+        return $this->di->get('view')->getCurrentRenderLevel();
     }
 
     private $asyncLoadRendered = false;
@@ -76,9 +89,9 @@ class AssetsHelper
         $secondOrder = [];
 
         foreach($asset as $element) {
-            if ($element['priority'] == 100) {
+            if ($element['priority'] == self::PRIORITY_TOP) {
                 $firstOrder[] = $element;
-            } elseif ($element['priority'] == 200) {
+            } elseif ($element['priority'] == self::PRIORITY_BOTTOM) {
                 $secondOrder[] = $element;
             }
         }
@@ -171,6 +184,10 @@ class AssetsHelper
         return $result;
     }
 
+    /**
+     * @deprecated
+     * @param $options
+     */
     public function addHeaderCssPost($options)
     {
         if (!is_array($options)) {
@@ -178,7 +195,7 @@ class AssetsHelper
                 'path' => $options
             ];
         }
-        $options['priority'] = 200;
+        $options['priority'] = self::PRIORITY_BOTTOM;
         $this->addHeaderCss($options);
     }
 
@@ -197,7 +214,10 @@ class AssetsHelper
             $options['ifCondition'] = false;
         }
         if (!array_key_exists('priority', $options)) {
-            $options['priority'] = 100;
+            $options['priority'] = self::PRIORITY_TOP;
+            if ($this->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
+                $options['priority'] = self::PRIORITY_BOTTOM;
+            }
         }
 
         $this->headerAssets[self::ASSET_TYPE_CSS][] = [
@@ -208,6 +228,10 @@ class AssetsHelper
         ];
     }
 
+    /**
+     * @deprecated
+     * @param $options
+     */
     public function addHeaderJsPost($options)
     {
         if (!is_array($options)) {
@@ -215,7 +239,7 @@ class AssetsHelper
                 'path' => $options
             ];
         }
-        $options['priority'] = 200;
+        $options['priority'] = self::PRIORITY_BOTTOM;
         $this->addHeaderJs($options);
     }
 
@@ -237,7 +261,10 @@ class AssetsHelper
             $options['ifCondition'] = false;
         }
         if (!array_key_exists('priority', $options)) {
-            $options['priority'] = 100;
+            $options['priority'] = self::PRIORITY_TOP;
+            if ($this->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
+                $options['priority'] = self::PRIORITY_BOTTOM;
+            }
         }
 
         $this->headerAssets[self::ASSET_TYPE_JS][] = [
@@ -249,6 +276,10 @@ class AssetsHelper
         ];
     }
 
+    /**
+     * @deprecated
+     * @param $options
+     */
     public function addFooterCssPost($options)
     {
         if (!is_array($options)) {
@@ -256,7 +287,7 @@ class AssetsHelper
                 'path' => $options
             ];
         }
-        $options['priority'] = 200;
+        $options['priority'] = self::PRIORITY_BOTTOM;
         $this->addFooterCss($options);
     }
 
@@ -275,7 +306,10 @@ class AssetsHelper
             $options['ifCondition'] = false;
         }
         if (!array_key_exists('priority', $options)) {
-            $options['priority'] = 100;
+            $options['priority'] = self::PRIORITY_TOP;
+            if ($this->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
+                $options['priority'] = self::PRIORITY_BOTTOM;
+            }
         }
 
         $this->footerAssets[self::ASSET_TYPE_CSS][] = [
@@ -286,6 +320,10 @@ class AssetsHelper
         ];
     }
 
+    /**
+     * @deprecated
+     * @param $options
+     */
     public function addFooterJsPost($options)
     {
         if (!is_array($options)) {
@@ -293,7 +331,7 @@ class AssetsHelper
                 'path' => $options
             ];
         }
-        $options['priority'] = 200;
+        $options['priority'] = self::PRIORITY_BOTTOM;
         $this->addFooterJs($options);
     }
 
@@ -315,7 +353,10 @@ class AssetsHelper
             $options['ifCondition'] = false;
         }
         if (!array_key_exists('priority', $options)) {
-            $options['priority'] = 100;
+            $options['priority'] = self::PRIORITY_TOP;
+            if ($this->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
+                $options['priority'] = self::PRIORITY_BOTTOM;
+            }
         }
 
         $this->footerAssets[self::ASSET_TYPE_JS][] = [
@@ -350,7 +391,7 @@ class AssetsHelper
     public function useCdnJQuery($version = '1.11.3')
     {
         $this->addFooterJs([
-            'path' => "https://code.jquery.com/jquery-{$version}.min.js"
+            'path' => "//code.jquery.com/jquery-{$version}.min.js"
         ]);
     }
 
