@@ -11,12 +11,14 @@ class ViewTemplateName
 
         $view = $dispatcher->getDI()->getService('view')->resolve();
 
-        $paths = $route->getMatchedRoute()->getPaths();
-        $controller = $paths['controller'];
-        $action = \Phalcon\Text::uncamelize($paths['action']);
-        $action = str_replace("_", "-", $action);
+        if ($route->getMatchedRoute()) {
+            $paths = $route->getMatchedRoute()->getPaths();
+            $controller = $paths['controller'];
+            $action = \Phalcon\Text::uncamelize($paths['action']);
+            $action = str_replace("_", "-", $action);
 
-        $template = $controller . '/' . $action;
-        $view->pick([$template]);
+            $template = $controller . '/' . $action;
+            $view->pick([$template]);
+        }
     }
 }
