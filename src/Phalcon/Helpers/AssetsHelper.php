@@ -45,7 +45,7 @@ class AssetsHelper
 
     public function renderAsyncLoad()
     {
-        $result = "";
+        $result = '';
         if ($this->asyncLoadRendered) {
             return $result;
         }
@@ -64,7 +64,7 @@ class AssetsHelper
 
     public function header()
     {
-        $result = "";
+        $result = '';
         $result .= $this->renderAsyncLoad();
         $result .= $this->renderAssets($this->headerAssets);
         return $result;
@@ -72,7 +72,7 @@ class AssetsHelper
 
     public function footer()
     {
-        $result = "";
+        $result = '';
         $result .= $this->renderAsyncLoad();
         $result .= $this->renderAssets($this->footerAssets);
 
@@ -112,9 +112,13 @@ class AssetsHelper
                 $result .= "<!--[if {$option['ifCondition']}]>\n";
             }
 
-            if ($option['asyncLoad'] == true) {
+            if ($option['asyncLoad']) {
             } else {
-                $result .= "<link rel=\"stylesheet\" href=\"{$option['path']}\"/>\n";
+                $file = $option['path'];
+                if (!$option['external']) {
+                    $file = $this->getFilenameWithVersion($option['path']);
+                }
+                $result .= "<link rel=\"stylesheet\" href=\"{$file}\"/>\n";
             }
 
             if (array_key_exists('ifCondition', $option) && $option['ifCondition']) {
@@ -128,11 +132,19 @@ class AssetsHelper
                 $result .= "<!--[if {$option['ifCondition']}]>\n";
             }
 
-            if ($option['async'] == true) {
-                $result .= "<script src=\"{$option['path']}\" async></script>\n";
-            } elseif ($option['asyncLoad'] == true) {
+            if ($option['async']) {
+                $file = $option['path'];
+                if (!$option['external']) {
+                    $file = $this->getFilenameWithVersion($option['path']);
+                }
+                $result .= "<script src=\"{$file}\" async></script>\n";
+            } elseif ($option['asyncLoad']) {
             } else {
-                $result .= "<script src=\"{$option['path']}\"></script>\n";
+                $file = $option['path'];
+                if (!$option['external']) {
+                    $file = $this->getFilenameWithVersion($option['path']);
+                }
+                $result .= "<script src=\"{$file}\"></script>\n";
             }
 
             if (array_key_exists('ifCondition', $option) && $option['ifCondition']) {
@@ -142,8 +154,12 @@ class AssetsHelper
 
         $asyncLoadListCss = [];
         foreach ($css as $option) {
-            if ($option['asyncLoad'] == true) {
-                $asyncLoadListCss[] = $option['path'];
+            if ($option['asyncLoad']) {
+                $file = $option['path'];
+                if (!$option['external']) {
+                    $file = $this->getFilenameWithVersion($option['path']);
+                }
+                $asyncLoadListCss[] = $file;
             }
         }
         if (count($asyncLoadListCss)) {
@@ -152,8 +168,12 @@ class AssetsHelper
 
         $asyncLoadListJs = [];
         foreach ($js as $option) {
-            if ($option['asyncLoad'] == true) {
-                $asyncLoadListJs[] = $option['path'];
+            if ($option['asyncLoad']) {
+                $file = $option['path'];
+                if (!$option['external']) {
+                    $file = $this->getFilenameWithVersion($option['path']);
+                }
+                $asyncLoadListJs[] = $file;
             }
         }
         if (count($asyncLoadListJs)) {
@@ -213,6 +233,9 @@ class AssetsHelper
         if (!array_key_exists('ifCondition', $options)) {
             $options['ifCondition'] = false;
         }
+        if (!array_key_exists('external', $options)) {
+            $options['external'] = false;
+        }
         if (!array_key_exists('priority', $options)) {
             $options['priority'] = self::PRIORITY_TOP;
             if ($this->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
@@ -225,6 +248,7 @@ class AssetsHelper
             'asyncLoad' => $options['asyncLoad'],
             'ifCondition' => $options['ifCondition'],
             'priority' => $options['priority'],
+            'external' => $options['external']
         ];
     }
 
@@ -260,6 +284,9 @@ class AssetsHelper
         if (!array_key_exists('ifCondition', $options)) {
             $options['ifCondition'] = false;
         }
+        if (!array_key_exists('external', $options)) {
+            $options['external'] = false;
+        }
         if (!array_key_exists('priority', $options)) {
             $options['priority'] = self::PRIORITY_TOP;
             if ($this->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
@@ -273,6 +300,7 @@ class AssetsHelper
             'asyncLoad' => $options['asyncLoad'],
             'ifCondition' => $options['ifCondition'],
             'priority' => $options['priority'],
+            'external' => $options['external']
         ];
     }
 
@@ -305,6 +333,9 @@ class AssetsHelper
         if (!array_key_exists('ifCondition', $options)) {
             $options['ifCondition'] = false;
         }
+        if (!array_key_exists('external', $options)) {
+            $options['external'] = false;
+        }
         if (!array_key_exists('priority', $options)) {
             $options['priority'] = self::PRIORITY_TOP;
             if ($this->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
@@ -317,6 +348,7 @@ class AssetsHelper
             'asyncLoad' => $options['asyncLoad'],
             'ifCondition' => $options['ifCondition'],
             'priority' => $options['priority'],
+            'external' => $options['external']
         ];
     }
 
@@ -352,6 +384,9 @@ class AssetsHelper
         if (!array_key_exists('ifCondition', $options)) {
             $options['ifCondition'] = false;
         }
+        if (!array_key_exists('external', $options)) {
+            $options['external'] = false;
+        }
         if (!array_key_exists('priority', $options)) {
             $options['priority'] = self::PRIORITY_TOP;
             if ($this->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
@@ -365,6 +400,7 @@ class AssetsHelper
             'asyncLoad' => $options['asyncLoad'],
             'ifCondition' => $options['ifCondition'],
             'priority' => $options['priority'],
+            'external' => $options['external']
         ];
     }
 
@@ -391,7 +427,8 @@ class AssetsHelper
     public function useCdnJQuery($version = '1.11.3')
     {
         $this->addFooterJs([
-            'path' => "//code.jquery.com/jquery-{$version}.min.js"
+            'path' => "//code.jquery.com/jquery-{$version}.min.js",
+            'external' => true
         ]);
     }
 
@@ -399,7 +436,8 @@ class AssetsHelper
     {
         $this->addHeaderCss([
             'path' => "//maxcdn.bootstrapcdn.com/font-awesome/{$version}/css/font-awesome.min.css",
-            'asyncLoad' => true
+            'asyncLoad' => true,
+            'external' => true
         ]);
     }
 
@@ -439,12 +477,24 @@ class AssetsHelper
 
     private function flushCssCode()
     {
-        return "<script>" . $this->getCssCode() . "</script>\n";
+        return '<script>' . $this->getCssCode() . "</script>\n";
     }
 
     private function flushJsCode()
     {
-        return "<script>" . $this->getJsCode() . "</script>\n";
+        return '<script>' . $this->getJsCode() . "</script>\n";
+    }
+
+    public function getFilenameWithVersion($filename)
+    {
+        if (defined('BUILD_ID')) {
+            if (preg_match('#\.js$#ui', $filename, $m)) {
+                $filename = preg_replace('#(\.js)$#ui', '.d' . BUILD_ID . '.js', $filename);
+            } elseif (preg_match('#\.css#ui', $filename, $m)) {
+                $filename = preg_replace('#(\.css)$#ui', '.d' . BUILD_ID . '.css', $filename);
+            }
+        }
+        return $filename;
     }
 
     private function getCssCode() {
