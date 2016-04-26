@@ -7,9 +7,23 @@ use Phalcon\DiInterface;
 
 class Repository implements InjectionAwareInterface
 {
-    public $models = array();
+    private $models = array();
 
-    public $di;
+    private $di;
+
+    private $namespace = 'Model';
+
+    private $postfix = 'Model';
+
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+    }
+
+    public function setPostfix($postfix)
+    {
+        $this->postfix = $postfix;
+    }
 
     public function getDI()
     {
@@ -21,10 +35,10 @@ class Repository implements InjectionAwareInterface
         $this->di = $dependencyInjector;
     }
 
-    public function getModel($modelName, $namespace = 'Model')
+    public function getModel($modelName)
     {
         if (!array_key_exists($modelName, $this->models)) {
-            $namespace = '\\'.$namespace.'\\'.$modelName;
+            $namespace = '\\'.$this->namespace.'\\'.$modelName . $this->postfix;
             $newModel = new $namespace;
             $newModel->setDI($this->di);
             $this->models[$modelName] = $newModel;
