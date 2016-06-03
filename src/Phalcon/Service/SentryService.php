@@ -29,7 +29,7 @@ class SentryService
             $error_handler->registerShutdownFunction();
         }
 
-        $di->set(self::SERVICE_NAME, function() use ($client) {
+        $di->setShared(self::SERVICE_NAME, function() use ($client) {
             return $client;
         });
     }
