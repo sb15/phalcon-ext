@@ -38,6 +38,7 @@ use Sb\Phalcon\Helpers;
  * @property \Raven_Client sentry          
  * @property \Sb\Phalcon\Service\Path\Path path
  * @property \Sb\Phalcon\Service\Seo\Seo seo
+ * @property \Sb\Phalcon\Service\Breadcrumb\Breadcrumb breadcrumb
  *
  * @method void beforeDispatchLoop(Phalcon\Mvc\Dispatcher $dispatcher)
  * @method void beforeDispatch(Phalcon\Mvc\Dispatcher $dispatcher)
@@ -66,16 +67,6 @@ class DefaultController extends \Phalcon\Mvc\Controller
         $this->view->setVars($data);
     }
 
-    public function beforeExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
-    {
-
-    }
-
-    public function afterExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
-    {
-
-    }
-
     public function disableLayout()
     {
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
@@ -87,6 +78,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
     }
 
     /**
+     * @deprecated
      * @return \Model\ModelsRepository
      */
     public function getModels()
@@ -95,6 +87,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
     }
 
     /**
+     * @deprecated
      * @return \Phalcon\Cache\BackendInterface
      */
     public function getFastCache()
@@ -103,6 +96,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
     }
 
     /**
+     * @deprecated
      * @return \Phalcon\Cache\BackendInterface
      */
     public function getSlowCache()
@@ -111,6 +105,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
     }
 
     /**
+     * @deprecated
      * @return Raven_Client
      */
     public function getSentry()
@@ -122,6 +117,12 @@ class DefaultController extends \Phalcon\Mvc\Controller
         return $sentry;
     }
 
+    /**
+     * @deprecated
+     * @param $routeName
+     * @param array $params
+     * @return string
+     */
     public function url($routeName, $params = array())
     {
         $urlHelper = new Helpers\UrlHelper($this->getDI());
@@ -130,6 +131,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
     }
 
     /**
+     * @deprecated
      * @return Helpers\UrlHelper
      */
     public function getUrlHelper()
@@ -138,6 +140,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
     }
 
     /**
+     * @deprecated
      * @return Helpers\SeoHelper
      */
     public function getSeoHelper()
@@ -146,6 +149,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
     }
 
     /**
+     * @deprecated
      * @return Helpers\ViewHelper
      */
     public function getViewHelper()
@@ -154,6 +158,7 @@ class DefaultController extends \Phalcon\Mvc\Controller
     }
 
     /**
+     * @deprecated
      * @return Helpers\BreadcrumbHelper
      */
     public function getBreadcrumbHelper()
@@ -161,6 +166,13 @@ class DefaultController extends \Phalcon\Mvc\Controller
         return $this->di->get(Helpers\BreadcrumbHelper::SERVICE_NAME);
     }
 
+    /**
+     * @deprecated
+     * @param null $param
+     * @param null $default
+     * @param null $filters
+     * @return array|mixed|null|string
+     */
     protected function p($param = null, $default = null, $filters = null)
     {
 
