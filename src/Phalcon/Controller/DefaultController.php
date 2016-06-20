@@ -77,6 +77,21 @@ class DefaultController extends \Phalcon\Mvc\Controller
         $this->view->setVar(\Sb\Phalcon\Plugins\ViewReturnPlugin::SET_JSON_RESPONSE, true);
     }
 
+    public function createNotFoundException()
+    {
+        throw new \Phalcon\Mvc\Dispatcher\Exception('', \Phalcon\Mvc\Dispatcher::EXCEPTION_ACTION_NOT_FOUND);
+    }
+
+    public function create301RedirectException($url)
+    {
+        throw new \Phalcon\Mvc\Dispatcher\Exception($url, 301);
+    }
+
+    public function create302RedirectException($url)
+    {
+        throw new \Phalcon\Mvc\Dispatcher\Exception($url, 302);
+    }
+
     /**
      * @deprecated
      * @return \Model\ModelsRepository
