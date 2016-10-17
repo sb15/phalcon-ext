@@ -36,8 +36,10 @@ namespace Sb\Phalcon\Stub\View;
  * @property \Sb\Phalcon\Service\Path\Path path
  * @property \Sb\Phalcon\Service\Breadcrumb\Breadcrumb breadcrumb
  * @property \Sb\Phalcon\Service\Seo\Seo seo
+ * @property \Sb\Phalcon\Service\Assets\Assets assets
  * 
- * @method Di get(string $serviceName) Get DI
+ * @method \Phalcon\Di get(string $serviceName) Get DI
+ * @method string partial(string $partialPath, $params = null) Partial View
  */
 class Phtml {
 

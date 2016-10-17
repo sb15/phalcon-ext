@@ -130,4 +130,15 @@ class Basic extends Form
 
     }
 
+    public function validatePostRequest(Request $request)
+    {
+        if (!$request->isPost()) {
+            throw new ApplicationException('Invalid method');
+        }
+
+        if (!$this->isValid($request->getPost())) {
+            throw new ApplicationException($this->getMessages());
+        }
+    }
+
 }
