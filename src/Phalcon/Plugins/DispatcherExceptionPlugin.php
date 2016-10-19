@@ -7,7 +7,7 @@ use Phalcon\Mvc\Dispatcher;
 
 class DispatcherExceptionPlugin
 {
-    public function beforeException(Event $event, Dispatcher $dispatcher, Dispatcher\Exception $exception)
+    public function beforeException(Event $event, Dispatcher $dispatcher, $exception)
     {
         $dispatcher->getEventsManager()->fire('dispatch:afterDispatchLoop', $dispatcher);
         $view = $dispatcher->getDI()->get('view');
