@@ -39,6 +39,7 @@ use Sb\Phalcon\Helpers;
  * @property \Sb\Phalcon\Service\Path\Path path
  * @property \Sb\Phalcon\Service\Seo\Seo seo
  * @property \Sb\Phalcon\Service\Breadcrumb\Breadcrumb breadcrumb
+ * @property \Phalcon\Queue\Beanstalk queue
  *
  * @method void beforeDispatchLoop(Phalcon\Mvc\Dispatcher $dispatcher)
  * @method void beforeDispatch(Phalcon\Mvc\Dispatcher $dispatcher)

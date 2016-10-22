@@ -4,6 +4,8 @@ namespace Sb\Phalcon\Form;
 
 use Phalcon\Forms\Form;
 use Phalcon\Filter;
+use Phalcon\Http\Request;
+use Sb\Phalcon\Exception\ApplicationException;
 
 /**
  * Class Basic
@@ -58,31 +60,7 @@ class Basic extends Form
     const FROM_VALIDATOR_UNIQUENESS = '\\Phalcon\\Validation\\Validator\\Uniqueness';
     const FROM_VALIDATOR_URL = '\\Phalcon\\Validation\\Validator\\Url';
 
-    //protected $fields = [];
-
-    protected $fields = [
-        'email' => [
-            'type' => [
-                self::FORM_ELEMENT_EMAIL => [
-                    //'placeholder' => 'Email',
-                    'class' => 'form-control fg-input input-lg',
-                ]
-            ],
-            'label' => 'Email',
-            'filters' => [
-                self::FORM_FILTER_TRIM
-            ],
-            'validators' => [
-                'PresenceOf' => [
-                    'message' => 'Поле Email обязательно для заполнения',
-                ],
-                'Email' => [
-                    'message' => 'Email не верен',
-                ]
-            ]
-        ],
-    ];
-
+    protected $fields = [];  
 
     public function initialize()
     {
@@ -95,15 +73,19 @@ class Basic extends Form
             /** @var \Phalcon\Forms\ElementInterface $element */
             $element = new $elementClass($fieldName, $attributes);
 
-            $element->setFilters($field['filters']);
-
-            foreach ($field['validators'] as $validatorClass => $validatorOptions) {
-
-                /** @var \Phalcon\Validation\ValidatorInterface $validator */
-                $validator = new $validatorClass($validatorOptions);
-                $element->addValidator($validator);
-
+            if (isset($field['filters'])) {
+               $element->setFilters($field['filters']);
             }
+
+			if (isset($field['validators'])) {
+	            foreach ($field['validators'] as $validatorClass => $validatorOptions) {
+
+	                /** @var \Phalcon\Validation\ValidatorInterface $validator */
+	                $validator = new $validatorClass($validatorOptions);
+	                $element->addValidator($validator);
+
+	            }
+        	}
 
             if (array_key_exists('label', $field)) {
                 $element->setLabel($field['label']);

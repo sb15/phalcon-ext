@@ -40,6 +40,7 @@ use Phalcon\Cli\Task;
  * @property \Sb\Phalcon\Service\Path\Path path
  * @property \Sb\Phalcon\Service\Seo\Seo seo
  * @property \Sb\Phalcon\Service\Breadcrumb\Breadcrumb breadcrumb
+ * @property \Phalcon\Queue\Beanstalk queue
  *
  */
 

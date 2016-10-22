@@ -22,6 +22,7 @@ class DispatcherExceptionPlugin
                 case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
                 case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
                 case Dispatcher::EXCEPTION_CYCLIC_ROUTING:
+                    $view->setVar('exception', $exception);
                     $view->render('error', 'notFound');
                     $response->setStatusCode(404, 'Not Found');
                     $response->send();
