@@ -37,6 +37,8 @@ namespace Sb\Phalcon\Stub\View;
  * @property \Sb\Phalcon\Service\Breadcrumb\Breadcrumb breadcrumb
  * @property \Sb\Phalcon\Service\Seo\Seo seo
  * @property \Sb\Phalcon\Service\Assets\Assets assets
+ * @property \Sb\Phalcon\Auth\Auth auth
+ * @property \Sb\Phalcon\Service\ApplicationCookie\ApplicationCookie applicationCookie
  * 
  * @method \Phalcon\Di get(string $serviceName) Get DI
  * @method string partial(string $partialPath, $params = null) Partial View

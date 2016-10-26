@@ -9,7 +9,7 @@ class QueueService
 {
     const SERVICE_NAME = 'queue';
 
-    public static function init(Di $di)
+    public static function init(Di $di, $defaultTube = 'default')
     {
         $config = $di->get('config');
 
@@ -17,10 +17,12 @@ class QueueService
             return;
         }
 
-        $params = $config->queue->beanstalk;
+        $params = (array) $config->queue;
 
-        $di->setShared(self::SERVICE_NAME, function() use ($params) {
-            return new Beanstalk($params);
+        $di->setShared(self::SERVICE_NAME, function() use ($params, $defaultTube) {
+            $beanstalk = new Beanstalk($params);
+            $beanstalk->choose($defaultTube);
+            return $beanstalk;
         });
     }
 }

@@ -40,6 +40,8 @@ use Sb\Phalcon\Helpers;
  * @property \Sb\Phalcon\Service\Seo\Seo seo
  * @property \Sb\Phalcon\Service\Breadcrumb\Breadcrumb breadcrumb
  * @property \Phalcon\Queue\Beanstalk queue
+ * @property \Sb\Phalcon\Auth\Auth auth
+ * @property \Sb\Phalcon\Service\ApplicationCookie\ApplicationCookie applicationCookie
  *
  * @method void beforeDispatchLoop(Phalcon\Mvc\Dispatcher $dispatcher)
  * @method void beforeDispatch(Phalcon\Mvc\Dispatcher $dispatcher)
